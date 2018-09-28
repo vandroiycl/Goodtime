@@ -39,14 +39,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apps.adrcotfas.goodtime.about.AboutMainActivity;
-import com.apps.adrcotfas.goodtime.about.DonationsActivity;
 import com.apps.adrcotfas.goodtime.about.ProductTourActivity;
 import com.apps.adrcotfas.goodtime.settings.SettingsActivity;
 import com.apps.adrcotfas.goodtime.util.DeviceInfo;
 import com.apps.adrcotfas.goodtime.util.WakeLocker;
-import com.google.android.gms.appinvite.AppInviteInvitation;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -860,26 +857,6 @@ public class TimerActivity extends AppCompatActivity
         }
     }
 
-    private void onInviteClicked() {
-
-        final String appPackageName = getPackageName();
-        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
-                .setMessage(getString(R.string.invitation_message))
-                .setDeepLink(Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName))
-                .setCallToActionText(getString(R.string.invitation_cta))
-                .build();
-        PackageManager packageManager = getPackageManager();
-        List activities = packageManager.queryIntentActivities(intent,
-                PackageManager.MATCH_DEFAULT_ONLY);
-        boolean isIntentSafe = activities.size() > 0;
-        if (isIntentSafe) {
-            startActivityForResult(intent, REQUEST_INVITE);
-        } else {
-            Toast.makeText(getBaseContext(), R.string.toast_google_services_missing, LENGTH_SHORT)
-                    .show();
-        }
-    }
-
     private void switchOrientation(boolean rotate) {
         if (rotate) {
             mTimeLabel.setRotation(90);
@@ -922,13 +899,6 @@ public class TimerActivity extends AppCompatActivity
                 break;
             case R.id.action_rate:
                 openPlayStorePage();
-                break;
-            case R.id.action_invite:
-                onInviteClicked();
-                break;
-            case R.id.about_pro:
-                Intent donateIntent = new Intent(this, DonationsActivity.class);
-                startActivity(donateIntent);
                 break;
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
